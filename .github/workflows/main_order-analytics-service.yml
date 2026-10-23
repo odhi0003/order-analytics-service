@@ -56,7 +56,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: python-app
-      
+
+      - name: Enable Azure build during deployment
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az webapp config appsettings set \
+              --name order-analytics-service \
+              --resource-group petstore-midterm \
+              --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
+              
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
